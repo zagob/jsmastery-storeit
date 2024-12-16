@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { Account, Avatars, Client, Databases, Storage } from "node-appwrite";
 import { appWriteConfig } from "./config";
@@ -11,7 +11,7 @@ export const createSessionClient = async () => {
 
   const session = (await cookies()).get("appwrite-session");
 
-  if (!session || !session.value) throw new Error("No session");
+  if (!session || !session.value) return null;
 
   client.setSession(session.value);
 
