@@ -37,6 +37,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [accountId, setAccountId] = useState(null);
 
+  const isSignIn = type === "sign-in"
+  const isSignUp = type === "sign-up"
+
   const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +55,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
     try {
       const user =
-        type === "sign-up"
+      isSignUp
           ? await createAccount({
               fullName: values.fullName || "",
               email: values.email,
@@ -73,9 +76,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
           <h1 className="form-title">
-            {type === "sign-in" ? "Sign In" : "Sign Up"}
+            {isSignUp ? "Sign In" : "Sign Up"}
           </h1>
-          {type === "sign-up" && (
+          {isSignUp && (
             <FormField
               control={form.control}
               name="fullName"
@@ -123,7 +126,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             className="form-submit-button"
             disabled={isLoading}
           >
-            {type === "sign-in" ? "Sign In" : "Sign Up"}
+            {isSignIn ? "Sign In" : "Sign Up"}
 
             {isLoading && (
               <Image
@@ -140,15 +143,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
           <div className="body-2 flex justify-center">
             <p className="text-light-100">
-              {type === "sign-in"
+              {isSignIn
                 ? "Don't have an account?"
                 : "Already have an account?"}
             </p>
             <Link
-              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              href={isSignIn ? "/sign-up" : "/sign-in"}
               className="ml-1 font-medium text-brand"
             >
-              {type === "sign-up" ? "Sign In" : "Sign Up"}
+              {isSignUp ? "Sign In" : "Sign Up"}
             </Link>
           </div>
         </form>
